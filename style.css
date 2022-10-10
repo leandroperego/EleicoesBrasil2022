@@ -1,0 +1,188 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+body{
+  font-family: sans-serif;
+}
+
+#urna{
+  background-image: url(urna.webp);
+  width: 500px;
+  height: 500px;
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+#tela{
+  width: 54%;
+  height: 32%;
+  position: relative;
+  top: 24%;
+  left: 7%;
+  background-color: #E5E5E5;
+}
+
+#digitos{
+  width: 20%;
+  height: 22%;
+  position: relative;
+  left: 68%;
+  bottom: 2%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btpadrao{
+  width: calc(100% / 3);
+  height: calc(100% / 4);
+  border: none;
+  cursor: pointer;
+  background: none;
+}
+
+.btpadrao:active{
+  border: solid;
+  border-width: 4px;
+}
+
+#digitosValidar{
+  width: 26%;
+  height: 5%;
+  position: relative;
+  left: 65%;
+  bottom: 2%;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 4px;
+}
+
+.btValidar{
+  width: calc(100% / 3);
+  height: 100%;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+#btbranco:active{
+  border: solid white;
+  border-width: 4px;
+}
+
+#btcorrige:active{
+  border: solid orangered;
+  border-width: 4px;
+}
+
+#btconfirma:active{
+  border: solid green;
+  border-width: 4px;
+}
+
+#posicaonumerostela{
+  width: 40%;
+  height: 15%;
+  position: relative;
+  left: 20%;
+  top: 20%;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.quadradopadrao{
+  width: calc(100% / 5);
+  height: 100%;
+  border: 1px solid;
+  padding: 1px;
+  text-align: center;
+}
+
+#cargo{
+  font-size: 0.8em;
+  position: relative;
+  left: 28%;
+  top: 10%;
+}
+
+#fotocandidato{
+  width: 20%;
+  height: 40%;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+#seuvotopara{
+  width: 30%;
+  height: 10%;
+  position: absolute;
+  font-size: 0.5em;
+}
+
+#txtnumero{
+  position: absolute;
+  font-size: 0.8em;
+  top: 33%;
+}
+
+.informacoes{
+  width: 60%;
+  height: 10%;
+}
+
+#nome{
+/*   position: absolute;
+/*   top: 50%; */ */
+}
+
+#partido{
+/*   position: absolute;
+  top: 63%; */
+}
+
+.rodape{
+  width: 100%;
+  height: 20%;
+  border-top: 1px solid;
+  position: absolute;
+  bottom: 0;
+}
+
+footer>:nth-child(1n), li{
+  font-size: 0.7em;
+}
+
+ul{
+  list-style-type: none;
+  margin-left: 10%;
+}
+
+.informacoes>span:nth-child(1n){
+  font-size: 0.7em;
+}
+
+img{
+  width: 100%;
+}
+
+#dadoscandidatos{
+  height: 35%;
+  position: relative;
+  top: 20%;
+  display: flex;
+  flex-direction: column;
+  gap: 20%;
+}
+
+#numErrado{
+  font-size: 0.8em;
+}
+
+#votonulo{
+  text-align: center;
+}
