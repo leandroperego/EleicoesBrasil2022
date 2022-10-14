@@ -29,8 +29,47 @@ function digitarNumero(numeroApertado) {
       liberarTelaInformacoes(numeroInformado());
     }
   } else {
-    console.log("Casas bloqueadas");
-    console.log(numeroInformado());
+
+  }
+}
+
+let bloquearConfirmaTemporario = false;
+
+function confirmarVoto(){
+  
+  if(!verificarDigitouTudo()){
+    tipoDeVoto = verificarTipoDeVoto();
+    if (tipoDeVoto == "branco"){
+      exibirTelaBranco();
+      if (bloquearConfirmaTemporario == true){
+        bloquearConfirmaTemporario = false;
+      } else{
+        bloquearConfirmaTemporario = true;
+      }
+    } else if(tipoDeVoto == "nulo"){
+      exibirTelaNulo();
+      if (bloquearConfirmaTemporario == true){
+        bloquearConfirmaTemporario = false;
+      } else{
+        bloquearConfirmaTemporario = true;
+      }
+    }
+  } else{
+    bloquearConfirmaTemporario = false;
+  }
+
+  if (!bloquearConfirmaTemporario){
+    if (!(ultimoCargoAvotar(listaDeCargosVotar) == cargoAvotar)){
+      if (branco()){
+        limparTelaConfirma("branco");
+      } else if(nulo()){
+        limparTelaConfirma("nulo");
+      }else{
+        limparTelaConfirma();
+      }
+    } else{
+      mostrarFIM();
+    }
   }
 }
 
@@ -48,44 +87,19 @@ function limparTelaConfirma(votoExecutado){
     default: limparPadraoTela();
       retirarDadosCandidato();
   }
-  
 }
 
-function confirmarVoto(){
-  
-  if (!(ultimoCargoAvotar(listaDeCargosVotar) == cargoAvotar)){
-    if (branco()){
-      limparTelaConfirma("branco");
-      // limparQuadrados();
-      // definirProximoCargoAvotar();
-      // retirarTelaBranco();
-      // pegarReferenciasQuadrados(pegarCargoDaVez(cargoAvotar));
-      // liberarTelaParaVotar(cargoAvotar);
-      // desbloquearCliques();
-      // qtdeNumerica = pegarCargoDaVez(cargoAvotar);
-    } else if(nulo()){
-      limparTelaConfirma("nulo");
-        // limparQuadrados();
-        // definirProximoCargoAvotar();
-        // retirarTelaNulo();
-        // pegarReferenciasQuadrados(pegarCargoDaVez(cargoAvotar));
-        // liberarTelaParaVotar(cargoAvotar);
-        // desbloquearCliques();
-        // qtdeNumerica = pegarCargoDaVez(cargoAvotar);
-    }else{
-      limparTelaConfirma();
-      // limparQuadrados();
-      // definirProximoCargoAvotar();
-      // limparPadraoTela();
-      // pegarReferenciasQuadrados(pegarCargoDaVez(cargoAvotar));
-      // liberarTelaParaVotar(cargoAvotar);
-      // desbloquearCliques();
-      // qtdeNumerica = pegarCargoDaVez(cargoAvotar);
-      // retirarDadosCandidato();
-    }
+function verificarTipoDeVoto(){
+  if (listaReferenciasQuadrado[0].innerText == ""){
+    return "branco";
   } else{
-    mostrarFIM();
+    for (let referencias of listaReferenciasQuadrado){
+      if (referencias.innerText == ""){
+        return "nulo";
+      }
   }
+}
+  return "correto";
 }
 
 function definirProximoCargoAvotar(){
@@ -105,6 +119,7 @@ function votarEmBranco(){
 }
 
 function corrigirDados(){
+  bloquearConfirmaTemporario = false;
   desbloquearBotao(btbranco);
   if (!nulo() && !branco()){
       limparNumerosDigitado(listaReferenciasQuadrado);
@@ -115,9 +130,7 @@ function corrigirDados(){
       retirarDadosCandidato();
       desbloquearCliques();
   } else{
-    for (var i = 0; i < listaReferenciasQuadrado.length; i++) {
-        listaReferenciasQuadrado[i].innerText = "";
-    }
+    limparNumerosDigitado(listaReferenciasQuadrado);
       txtnumero.innerText = "";
      retirarRodape();
      desbloquearCliques();
@@ -219,7 +232,6 @@ function liberarTelaInformacoes(numeroDigitado) {
 function nulo() {
   
   let numeroVotado = numeroInformado();
-  console.log(numeroVotado);
   let cargo = cargoAvotar;
   for (let i = 0; i < listaCandidatos.length; i++) {
     if ((numeroVotado == listaCandidatos[i].numero && cargoAvotar == listaCandidatos[i].cargo) || branco()){
@@ -237,12 +249,14 @@ function exibirTelaBranco(){
   txtnumero.innerText = "Número:";
   dadoscandidatos.innerHTML = '<p id="votobranco">VOTO EM BRANCO</p>';
   exibirRodape();
+  return true;
 }
 
 function exibirTelaNulo() {
   txtnumero.innerText = "Número:";
   dadoscandidatos.innerHTML = `<p id="numErrado">NÚMERO ERRADO</p> <p id="votonulo">VOTO NULO</p>`;
   exibirRodape();
+  return true;
 }
 
 function retirarTelaBranco(){
@@ -273,19 +287,18 @@ function retirarRodape(){
   rodape.classList.remove("rodape");
 }
 
+function limparHTMLtela(){
+  tela.remove();
+  
+}
+
 function mostrarFIM(){
-  //fazer funcao remover todos os filhos da #tela e inserir novo html
-  limparQuadrados();
-  for (var i = 0; i < listaReferenciasQuadrado.length; i++) {
-      listaReferenciasQuadrado[i].innerText = "";
-  }
-  cargo.innerText = "FIM";
-  seuvotopara.innerText = "";
-  txtnumero.innerText = "";
-    labelnome.innerText = "";
-    labelpartido.innerText = "";
-    retirarRodape();
-    retirarDadosCandidato();
+  limparHTMLtela();
+  urna.innerHTML = `<div id="telafim">
+    <p id="txtfim">FIM</p>
+    <p id="votou">VOTOU</p>
+  </div>
+  `
 }
 
 function verificarDigitouTudo() {
