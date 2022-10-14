@@ -20,7 +20,6 @@ let casasLiberadas = true;
 liberarTelaParaVotar(cargoAvotar);
 function digitarNumero(numeroApertado) {
   if (casasLiberadas) {
-    pegarReferenciasQuadrados(pegarCargoDaVez(cargoAvotar));
     validarCasaDaVez().innerText = numeroApertado;
 
     if (verificarDigitouTudo()) {
@@ -34,32 +33,64 @@ function digitarNumero(numeroApertado) {
 }
 
 function confirmarVoto(){
-  console.log("Voto confirmado");
 
-  if (!(listaDeCargosVotar[listaDeCargosVotar.length] == cargoAvotar || cargoAvotar == "Presidente")){
-    limparQuadrados();
-    posicao++;
-    cargoAvotar = listaDeCargosVotar[posicao];
-    corrigirDados();
-    pegarReferenciasQuadrados(pegarCargoDaVez(cargoAvotar));
-    liberarTelaParaVotar(cargoAvotar);
-    desbloquearCliques();
-    qtdeNumerica = pegarCargoDaVez(cargoAvotar);
+  if (!(ultimoCargoAvotar(listaDeCargosVotar) == cargoAvotar)){
+    if (branco()){
+      limparQuadrados();
+      definirProximoCargoAvotar();
+      retirarTelaBranco();
+      pegarReferenciasQuadrados(pegarCargoDaVez(cargoAvotar));
+      liberarTelaParaVotar(cargoAvotar);
+      desbloquearCliques();
+      qtdeNumerica = pegarCargoDaVez(cargoAvotar);
+    } else if(nulo()){
+      limparQuadrados();
+      definirProximoCargoAvotar();
+      retirarTelaNulo();
+      pegarReferenciasQuadrados(pegarCargoDaVez(cargoAvotar));
+      liberarTelaParaVotar(cargoAvotar);
+      desbloquearCliques();
+      qtdeNumerica = pegarCargoDaVez(cargoAvotar);
+    }else{
+      limparQuadrados();
+      definirProximoCargoAvotar();
+      corrigirDados();
+      pegarReferenciasQuadrados(pegarCargoDaVez(cargoAvotar));
+      liberarTelaParaVotar(cargoAvotar);
+      desbloquearCliques();
+      qtdeNumerica = pegarCargoDaVez(cargoAvotar);
+    }
   } else{
     mostrarFIM();
   }
 }
 
+function definirProximoCargoAvotar(){
+  posicao++;
+  cargoAvotar = listaDeCargosVotar[posicao];
+}
+
+function ultimoCargoAvotar(listaDeCargos){
+  return listaDeCargos[listaDeCargos.length - 1];
+}
+
 function votarEmBranco(){
-  console.log("Voto em Branco");
-  // exibirTelaVotoEmBranco();
+  if (!nulo()){
+    exibirTelaBranco();
+    bloquearCliques();
+  }
+}
+
+function limparNumerosDigitado(referenciasHTMLDosQuadrados){
+  for (var i = 0; i < referenciasHTMLDosQuadrados.length; i++) {
+        referenciasHTMLDosQuadrados[i].innerText = "";
+    }
 }
 
 function corrigirDados(){
-  if (!nulo()){
-    for (var i = 0; i < listaReferenciasQuadrado.length; i++) {
-        listaReferenciasQuadrado[i].innerText = "";
-    }
+  
+  if (!nulo() && !branco()){
+      limparNumerosDigitado(listaReferenciasQuadrado);
       txtnumero.innerText = "";
       labelnome.innerText = "";
       labelpartido.innerText = "";
@@ -110,6 +141,7 @@ function limparQuadrados(){
 }
 
 function liberarTelaParaVotar(cargoDaVez) {
+  pegarReferenciasQuadrados(pegarCargoDaVez(cargoDaVez));
   seuvotopara.innerText = "SEU VOTO PARA";
   cargo.innerText = cargoDaVez;
 
@@ -143,13 +175,23 @@ function liberarTelaInformacoes(numeroDigitado) {
 function nulo() {
   
   let numeroVotado = numeroInformado();
+  console.log(numeroVotado);
   let cargo = cargoAvotar;
   for (let i = 0; i < listaCandidatos.length; i++) {
-    if (numeroVotado == listaCandidatos[i].numero && cargoAvotar == listaCandidatos[i].cargo){
+    if ((numeroVotado == listaCandidatos[i].numero && cargoAvotar == listaCandidatos[i].cargo) || branco()){
       return false;
     }
   }
   return true;
+}
+
+function branco(){
+  return numeroInformado() == "";
+}
+
+function exibirTelaBranco(){
+  txtnumero.innerText = "Número:";
+  dadoscandidatos.innerHTML = '<p id="votobranco">VOTO EM BRANCO</p>';
 }
 
 function exibirTelaNulo() {
@@ -158,7 +200,14 @@ function exibirTelaNulo() {
   exibirRodape();
 }
 
+function retirarTelaBranco(){
+  retirarTelaNulo();
+}
+
 function retirarTelaNulo(){
+  retirarRodape();
+  txtnumero.innerText = "";
+  limparNumerosDigitado(listaReferenciasQuadrado);
   dadoscandidatos.innerHTML = `<div id="nome" class="informacoes">
         <span id="labelnome"></span>
         <span id="nomecandidato"></span>
@@ -180,6 +229,7 @@ function retirarRodape(){
 }
 
 function mostrarFIM(){
+  //fazer funcao remover todos os filhos da #tela e inserir novo html
   limparQuadrados();
   for (var i = 0; i < listaReferenciasQuadrado.length; i++) {
       listaReferenciasQuadrado[i].innerText = "";
