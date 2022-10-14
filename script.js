@@ -10,7 +10,7 @@ class Candidato {
 
 let listaReferenciasQuadrado = [];
 let listaDeCargosVotar = ["Deputado Estadual", "Deputado Federal", "Governador", "Senador", "Presidente"];
-let listaCandidatos = [new Candidato("22", "Jair Messias Bolsonaro", "PL", "Presidente", "http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcS550M1ICeYPbt-pqGKCmFx68FR1m28EbxVnriNQQp8W8VZaeLmhMwRanZlxBVZjH81"), new Candidato("13", "Luiz Inácio Lula da Silva", "PT", "Presidente", "http://t0.gstatic.com/licensed-image?q=tbn:ANd9GcSS_wgthyVMO3Kf3PVDrQ9Fn8ingrLR354BQiAkherjnPWDzvubYZKgNjQHmFnN1duh")];
+let listaCandidatos = [new Candidato("22", "Jair Messias Bolsonaro", "PL", "Presidente", "http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcS550M1ICeYPbt-pqGKCmFx68FR1m28EbxVnriNQQp8W8VZaeLmhMwRanZlxBVZjH81"), new Candidato("13", "Luiz Inácio Lula da Silva", "PT", "Presidente", "http://t0.gstatic.com/licensed-image?q=tbn:ANd9GcSS_wgthyVMO3Kf3PVDrQ9Fn8ingrLR354BQiAkherjnPWDzvubYZKgNjQHmFnN1duh"), new Candidato("55", "Carlos Ratinho Júnior", "PSD", "Governador", "http://t0.gstatic.com/licensed-image?q=tbn:ANd9GcRWwBilM99SoyfVKQggIFLJaDP2bsjHOX3jiWjGblN4b3AfDO-v7kdaqi3-MOzKkVuI")];
 
 let posicao = 0;
 let cargoAvotar = listaDeCargosVotar[posicao];
@@ -18,12 +18,14 @@ let qtdeNumerica = pegarCargoDaVez(cargoAvotar);
 let casasLiberadas = true;
 
 liberarTelaParaVotar(cargoAvotar);
+
 function digitarNumero(numeroApertado) {
   if (casasLiberadas) {
     validarCasaDaVez().innerText = numeroApertado;
 
     if (verificarDigitouTudo()) {
       bloquearCliques();
+      bloquearBotao(btbranco);
       liberarTelaInformacoes(numeroInformado());
     }
   } else {
@@ -32,33 +34,54 @@ function digitarNumero(numeroApertado) {
   }
 }
 
-function confirmarVoto(){
+function limparTelaConfirma(votoExecutado){
+  limparQuadrados();
+      definirProximoCargoAvotar();
+      pegarReferenciasQuadrados(pegarCargoDaVez(cargoAvotar));
+      liberarTelaParaVotar(cargoAvotar);
+      desbloquearCliques();
+      qtdeNumerica = pegarCargoDaVez(cargoAvotar);
 
+  switch (votoExecutado){
+    case "branco": retirarTelaBranco(); break;
+    case "nulo": retirarTelaNulo(); break;
+    default: limparPadraoTela();
+      retirarDadosCandidato();
+  }
+  
+}
+
+function confirmarVoto(){
+  
   if (!(ultimoCargoAvotar(listaDeCargosVotar) == cargoAvotar)){
     if (branco()){
-      limparQuadrados();
-      definirProximoCargoAvotar();
-      retirarTelaBranco();
-      pegarReferenciasQuadrados(pegarCargoDaVez(cargoAvotar));
-      liberarTelaParaVotar(cargoAvotar);
-      desbloquearCliques();
-      qtdeNumerica = pegarCargoDaVez(cargoAvotar);
+      limparTelaConfirma("branco");
+      // limparQuadrados();
+      // definirProximoCargoAvotar();
+      // retirarTelaBranco();
+      // pegarReferenciasQuadrados(pegarCargoDaVez(cargoAvotar));
+      // liberarTelaParaVotar(cargoAvotar);
+      // desbloquearCliques();
+      // qtdeNumerica = pegarCargoDaVez(cargoAvotar);
     } else if(nulo()){
-      limparQuadrados();
-      definirProximoCargoAvotar();
-      retirarTelaNulo();
-      pegarReferenciasQuadrados(pegarCargoDaVez(cargoAvotar));
-      liberarTelaParaVotar(cargoAvotar);
-      desbloquearCliques();
-      qtdeNumerica = pegarCargoDaVez(cargoAvotar);
+      limparTelaConfirma("nulo");
+        // limparQuadrados();
+        // definirProximoCargoAvotar();
+        // retirarTelaNulo();
+        // pegarReferenciasQuadrados(pegarCargoDaVez(cargoAvotar));
+        // liberarTelaParaVotar(cargoAvotar);
+        // desbloquearCliques();
+        // qtdeNumerica = pegarCargoDaVez(cargoAvotar);
     }else{
-      limparQuadrados();
-      definirProximoCargoAvotar();
-      corrigirDados();
-      pegarReferenciasQuadrados(pegarCargoDaVez(cargoAvotar));
-      liberarTelaParaVotar(cargoAvotar);
-      desbloquearCliques();
-      qtdeNumerica = pegarCargoDaVez(cargoAvotar);
+      limparTelaConfirma();
+      // limparQuadrados();
+      // definirProximoCargoAvotar();
+      // limparPadraoTela();
+      // pegarReferenciasQuadrados(pegarCargoDaVez(cargoAvotar));
+      // liberarTelaParaVotar(cargoAvotar);
+      // desbloquearCliques();
+      // qtdeNumerica = pegarCargoDaVez(cargoAvotar);
+      // retirarDadosCandidato();
     }
   } else{
     mostrarFIM();
@@ -81,13 +104,34 @@ function votarEmBranco(){
   }
 }
 
+function corrigirDados(){
+  desbloquearBotao(btbranco);
+  if (!nulo() && !branco()){
+      limparNumerosDigitado(listaReferenciasQuadrado);
+      txtnumero.innerText = "";
+      labelnome.innerText = "";
+      labelpartido.innerText = "";
+      retirarRodape();
+      retirarDadosCandidato();
+      desbloquearCliques();
+  } else{
+    for (var i = 0; i < listaReferenciasQuadrado.length; i++) {
+        listaReferenciasQuadrado[i].innerText = "";
+    }
+      txtnumero.innerText = "";
+     retirarRodape();
+     desbloquearCliques();
+      retirarTelaNulo();
+  }
+}
+
 function limparNumerosDigitado(referenciasHTMLDosQuadrados){
   for (var i = 0; i < referenciasHTMLDosQuadrados.length; i++) {
         referenciasHTMLDosQuadrados[i].innerText = "";
     }
 }
 
-function corrigirDados(){
+function limparPadraoTela(){
   
   if (!nulo() && !branco()){
       limparNumerosDigitado(listaReferenciasQuadrado);
@@ -192,6 +236,7 @@ function branco(){
 function exibirTelaBranco(){
   txtnumero.innerText = "Número:";
   dadoscandidatos.innerHTML = '<p id="votobranco">VOTO EM BRANCO</p>';
+  exibirRodape();
 }
 
 function exibirTelaNulo() {
@@ -284,4 +329,12 @@ function pegarCargoDaVez(cargo){
     case "Senador": return 3;
     default: return 2;
   }
+}
+
+function bloquearBotao(id){
+  id.disabled = true;
+}
+
+function desbloquearBotao(id){
+  id.disabled = false;
 }
