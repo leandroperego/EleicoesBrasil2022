@@ -297,6 +297,7 @@ function mostrarFIM(){
     <p id="votou">VOTOU</p>
   </div>
   `
+  habilitarBtNovoEleitor();
 }
 
 function verificarDigitouTudo() {
@@ -348,4 +349,8 @@ function bloquearBotao(id){
 
 function desbloquearBotao(id){
   id.disabled = false;
+}
+
+function habilitarBtNovoEleitor(){
+  btnovoeleitor.disabled = false;
 }
