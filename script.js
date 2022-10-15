@@ -28,8 +28,6 @@ function digitarNumero(numeroApertado) {
       bloquearBotao(btbranco);
       liberarTelaInformacoes(numeroInformado());
     }
-  } else {
-
   }
 }
 
@@ -112,6 +110,7 @@ function ultimoCargoAvotar(listaDeCargos){
 }
 
 function votarEmBranco(){
+  bloquearConfirmaTemporario = true;
   if (!nulo()){
     exibirTelaBranco();
     bloquearCliques();
@@ -249,14 +248,13 @@ function exibirTelaBranco(){
   txtnumero.innerText = "Número:";
   dadoscandidatos.innerHTML = '<p id="votobranco">VOTO EM BRANCO</p>';
   exibirRodape();
-  return true;
 }
 
 function exibirTelaNulo() {
   txtnumero.innerText = "Número:";
   dadoscandidatos.innerHTML = `<p id="numErrado">NÚMERO ERRADO</p> <p id="votonulo">VOTO NULO</p>`;
   exibirRodape();
-  return true;
+  bloquearCliques();
 }
 
 function retirarTelaBranco(){
