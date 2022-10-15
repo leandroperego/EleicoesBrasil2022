@@ -5,6 +5,7 @@ class Candidato {
     this.partido = partido;
     this.cargo = cargo;
     this.caminhoImagem = caminhoImagem;
+    this.totalDeVotos = 0;
   }
 }
 
@@ -34,7 +35,6 @@ function digitarNumero(numeroApertado) {
 let bloquearConfirmaTemporario = false;
 
 function confirmarVoto(){
-  
   if(!verificarDigitouTudo()){
     tipoDeVoto = verificarTipoDeVoto();
     if (tipoDeVoto == "branco"){
@@ -60,15 +60,33 @@ function confirmarVoto(){
     if (!(ultimoCargoAvotar(listaDeCargosVotar) == cargoAvotar)){
       if (branco()){
         limparTelaConfirma("branco");
+        //computarVotoBranco();
       } else if(nulo()){
         limparTelaConfirma("nulo");
+        //computarVotoNulo();
       }else{
         limparTelaConfirma();
+        computarVotoCandidato();
       }
     } else{
       mostrarFIM();
     }
   }
+}
+
+function computarVotoNulo(){
+
+}
+
+function computarVotoCandidato(){
+  let cargoVotado = cargoAvotar;
+  
+  for (let i = 0; i < listaCandidatos.length; i++) {
+    let candidatoLista = listaCandidatos[i];
+    if (candidatoLista.cargo == cargoVotado && candidatoLista.numero == numeroInformado()){
+      candidatoLista.totalDeVotos++;
+    }
+}
 }
 
 function limparTelaConfirma(votoExecutado){
