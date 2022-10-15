@@ -8,6 +8,8 @@ class Candidato {
     this.totalDeVotos = 0;
   }
 }
+let totalVotosBrancos = 0;
+let totalVotosNulos = 0;
 
 let listaReferenciasQuadrado = [];
 let listaDeCargosVotar = ["Deputado Estadual", "Deputado Federal", "Governador", "Senador", "Presidente"];
@@ -75,7 +77,11 @@ function confirmarVoto(){
 }
 
 function computarVotoNulo(){
+  totalVotosNulos++;
+}
 
+function computarVotoBranco(){
+  totalVotosBrancos++;
 }
 
 function computarVotoCandidato(){
