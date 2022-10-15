@@ -175,6 +175,7 @@ function validarCasaDaVez() {
 
   for (var i = 0; i < listaReferenciasQuadrado.length; i++) {
     if (listaReferenciasQuadrado[i].innerText == "") {
+      console.log(listaReferenciasQuadrado[i]);
       return listaReferenciasQuadrado[i];
     }
   }
@@ -349,4 +350,75 @@ function bloquearBotao(id){
 
 function desbloquearBotao(id){
   id.disabled = false;
+}
+
+function telaInicial(){
+  urna.innerHTML = `
+  <div id="tela">
+      <p id="seuvotopara"></p>
+      <h2 id="cargo"></h2>
+      
+      <span id="txtnumero"></span>
+      <div id="posicaonumerostela">
+        <div id="quadrado1" class=""></div>
+        <div id="quadrado2" class=""></div>
+        <div id="quadrado3" class=""></div>
+        <div id="quadrado4" class=""></div>
+        <div id="quadrado5" class=""></div>
+      </div>
+
+      <div id="dadoscandidatos">
+      <div id="nome" class="informacoes">
+        <span id="labelnome"></span>
+        <span id="nomecandidato"></span>
+      </div>
+      <div id="partido" class="informacoes">
+        <span id="labelpartido"></span>
+        <span id="partidocandidato"></span>
+      </div>
+        </div>
+      <div id="fotocandidato">
+        
+      </div>
+
+      <footer id="rodape" class="">
+        <!--         <p>Aperte a tecla:</p>
+        <ul>
+          <li>VERDE para CONFIRMAR este voto</li>
+          <li>LARANJA para REINICIAR este voto</li>
+        </ul> -->
+      </footer>
+    </div>
+
+    <div id="digitos">
+      <button id="bt1" class="btpadrao" onclick="digitarNumero(1)"></button>
+      <button id="bt2" class="btpadrao" onclick="digitarNumero(2)"></button>
+      <button id="bt3" class="btpadrao" onclick="digitarNumero(3)"></button>
+      <button id="bt4" class="btpadrao" onclick="digitarNumero(4)"></button>
+      <button id="bt5" class="btpadrao" onclick="digitarNumero(5)"></button>
+      <button id="bt6" class="btpadrao" onclick="digitarNumero(6)"></button>
+      <button id="bt7" class="btpadrao" onclick="digitarNumero(7)"></button>
+      <button id="bt8" class="btpadrao" onclick="digitarNumero(8)"></button>
+      <button id="bt9" class="btpadrao" onclick="digitarNumero(9)"></button>
+      <button id="bt0" class="btpadrao" onclick="digitarNumero(0)"></button>
+    </div>
+
+    <div id="digitosValidar">
+      <button id="btbranco" class="btValidar" onclick="votarEmBranco()"></button>
+      <button id="btcorrige" class="btValidar" onclick="corrigirDados()"></button>
+      <button id="btconfirma" class="btValidar" onclick="confirmarVoto()"></button>
+    </div>
+
+  `
+}
+
+function liberarNovoEleitor(){
+  telaInicial();
+  listaReferenciasQuadrado = [];
+  posicao = 0;
+cargoAvotar = listaDeCargosVotar[posicao];
+qtdeNumerica = pegarCargoDaVez(cargoAvotar);
+casasLiberadas = true;
+liberarTelaParaVotar(cargoAvotar);
+btnovoeleitor.disabled = true;
 }
